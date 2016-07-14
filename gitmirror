@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+if($argc < 3) {
+    echo "Usage: gitmirror <source git path> <target git path>\r\n";
+    exit;
+}
+
+$source = $argv[1];
+$target = $argv[2];
+$tempFolder = "t" . md5(mt_rand(1,100) . time());
+if(shell_exec("git clone --mirror " . $source . " " . $tempFolder))
+    if(shell_exec("cd " . $tempFolder)
+        if(shell_exec("git push --mirror " . $target))
+            echo "\r\n\r\nDone!\r\n";
+        else {
+            echo "\r\n\r\nFailed!\r\n";
+        }
+?>
